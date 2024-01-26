@@ -31,6 +31,10 @@ incrementing counter as a suffix:
 const id = `${jsonRpcAppLoadId}_${requestCounter}`;
 ```
 
+Unfortunately, a random value in a payload means the HAR feature of PlayWright
+treats all requests as unique, and it will fail to load and serve a saved HAR
+from file.
+
 We're reluctant to change the way these `id`s are calculated because we have a
 micro-frontend architecture. This means multiple apps could, in the same page,
 call the same back-end APIs, and we'd like to ensure responses get routed to
