@@ -3,6 +3,9 @@
 This repo was created to demonstrate an issue with HAR vs. Manual mocking in
 PlayWright.
 
+Link to issue in PlayWright repo:
+- https://github.com/microsoft/playwright/issues/29190
+
 ## Problem
 
 We wish to intercept and modify PlayWright HAR requests and responses.
