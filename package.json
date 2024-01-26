@@ -1,0 +1,17 @@
+{
+  "private": true,
+  "name": "playwright-har-intercept",
+  "version": "1.0.0",
+  "scripts": {
+    "postinstall": "npx playwright install",
+    "start": "node src/server.cjs",
+    "test": "npx playwright test --project chromium"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.41.1",
+    "koa": "^2.15.0",
+    "koa-static": "^5.0.0"
+  }
+}
