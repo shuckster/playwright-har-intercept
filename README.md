@@ -3,6 +3,9 @@
 This repo was created to demonstrate an issue with HAR vs. Manual mocking in
 PlayWright.
 
+Link to issue in PlayWright repo:
+- https://github.com/microsoft/playwright/issues/29190
+
 ## Problem
 
 We wish to intercept and modify PlayWright HAR requests and responses.
@@ -30,6 +33,10 @@ incrementing counter as a suffix:
 ```javascript
 const id = `${jsonRpcAppLoadId}_${requestCounter}`;
 ```
+
+Unfortunately, a random value in a payload means the HAR feature of PlayWright
+treats all requests as unique, and it will fail to load and serve a saved HAR
+from file.
 
 We're reluctant to change the way these `id`s are calculated because we have a
 micro-frontend architecture. This means multiple apps could, in the same page,
