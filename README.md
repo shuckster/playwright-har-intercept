@@ -1,3 +1,19 @@
+# Updated branch since getting feedback from issue below
+
+Link to issue in PlayWright repo:
+- https://github.com/microsoft/playwright/issues/29190
+
+Documentation on `route.fallback` + `route.fulfill`:
+- https://playwright.dev/docs/api/class-route#route-fallback
+- https://playwright.dev/docs/api/class-route#route-fulfill
+
+PlayWright tests demonstrating this:
+- https://github.com/microsoft/playwright/commit/32034728ad1d03c9a012b80060f8e8353fa2aa4b?diff=unified&w=0
+
+Original README below:
+
+---
+
 # PlayWright: HAR vs. Manual mocking
 
 This repo was created to demonstrate an issue with HAR vs. Manual mocking in
