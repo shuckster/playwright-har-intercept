@@ -13,9 +13,10 @@
       })
         .then(res => res.json())
         .then(json => {
-          const { id } = json.json
-          window.value = id;
-          console.log('id', id);
+          const { id, payload: { name, age } } = json.json
+          window.idValue = id;
+          window.nameValue = name;
+          window.ageValue = age;
         });
     }
     main();

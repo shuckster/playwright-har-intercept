@@ -11,7 +11,7 @@ test("routeFromHAR vs. page.route", async ({ page }) => {
 
   await page.routeFromHAR("./hars/httpbin.har", {
     url: "https://httpbin.org/post",
-    update: true,
+    update: false,
     updateContent: "embed",
   });
 
@@ -64,7 +64,9 @@ test("routeFromHAR vs. page.route", async ({ page }) => {
 
   await delay(1000);
 
-  expect(await page.evaluate('window.value')).toBe(mockId);
+  expect(await page.evaluate('window.idValue')).toBe(mockId);
+  expect(await page.evaluate('window.nameValue')).toBe('Gordon Freeman');
+  expect(await page.evaluate('window.ageValue')).toBe(27);
   expect(harId).toBe(mockId);
 });
 
