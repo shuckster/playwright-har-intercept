@@ -9,41 +9,65 @@ test("routeFromHAR vs. page.route", async ({ page }) => {
 
   const mockId = "12345";
 
-  await page.route("**", async (route, request) => {
-    if (request.method() !== "POST") {
-      route.continue();
-      return;
-    }
-
-    const requestData = JSON.parse(request.postData());
-    if (requestData.id) {
-      requestData.id = mockId;
-    }
-
-    route.continue({
-      method: request.method(),
-      headers: request.headers(),
-      postData: JSON.stringify(requestData),
-    });
-  });
-
   await page.routeFromHAR("./hars/httpbin.har", {
     url: "https://httpbin.org/post",
     update: true,
     updateContent: "embed",
   });
 
+  await page.route("**/*", async (route) => {
+    if (route.request().method() !== "POST") {
+      return route.continue();
+    }
+    console.log('=== fulfill ===');
+    const response = await route.fetch();
+    const json = await response.json();
+    json.json.id = mockId;
+
+    const requestData = route.request();
+    requestData.id = mockId;
+
+    return route.fulfill({
+      response,
+      json,
+      postData: JSON.stringify(requestData)
+    });
+  });
+
+  await page.route("**/*", async (route, request) => {
+    if (route.request().method() !== "POST") {
+      return route.continue();
+    }
+    console.log('=== fallback ===');
+    const requestData = JSON.parse(request.postData());
+    if (requestData.id) {
+      requestData.id = mockId;
+    }
+    return route.fallback({
+      postData: JSON.stringify(requestData),
+    });
+  });
+
+
   //
   // Testing
   //
 
   await page.goto(`http://localhost:${SERVER_PORT}/index.html`);
+  await delay(1000);
 
   const harAsJson = readFileSync("./hars/httpbin.har");
   const har = JSON.parse(harAsJson);
-  const postDataTextAsJson = har.log.entries[0].request.postData.text;
+  const postDataTextAsJson = har.log.entries[1]?.request.postData.text ?? '{ id: "oops" }';
   const postDataText = JSON.parse(postDataTextAsJson);
   const { id: harId } = postDataText;
 
+  await delay(1000);
+
+  expect(await page.evaluate('window.value')).toBe(mockId);
   expect(harId).toBe(mockId);
 });
+
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}

@@ -4,12 +4,18 @@
       fetch('https://httpbin.org/post', {
         method: 'POST',
         body: JSON.stringify({
-          id: String(Math.round(Math.random() * 9999))
+          id: String(Math.round(Math.random() * 9999)),
+          payload: {
+            name: 'Gordon Freeman',
+            age: 27,
+          }
         })
       })
         .then(res => res.json())
         .then(json => {
-          console.log('response json', json);
+          const { id } = json.json
+          window.value = id;
+          console.log('id', id);
         });
     }
     main();
